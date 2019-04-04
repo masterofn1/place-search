@@ -52,6 +52,12 @@ public class IndexFragment extends Fragment {
     return view;
   }
 
+  @Override
+  public void onResume() {
+    super.onResume();
+    if (listener != null) listener.onHideToolBar();
+  }
+
   @OnClick(R.id.tv_tap_to_select)
   void openSearchPage() {
     if (listener != null) listener.onTapToSearchClicked();
@@ -59,5 +65,7 @@ public class IndexFragment extends Fragment {
 
   public interface InteractionListener {
     void onTapToSearchClicked();
+
+    void onHideToolBar();
   }
 }
