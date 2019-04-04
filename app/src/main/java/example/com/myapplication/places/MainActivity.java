@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -16,7 +17,10 @@ public class MainActivity extends AppCompatActivity implements IndexFragment.Int
     SearchFragment.InteractionListener {
   private FragmentManager fragmentManager = getSupportFragmentManager();
 
+  private SearchFragment searchFragment;
+
   @BindView(R.id.toolbar) Toolbar toolbar;
+  @BindView(R.id.svCity) SearchView svCity;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,8 @@ public class MainActivity extends AppCompatActivity implements IndexFragment.Int
 
   @Override
   public void onTapToSearchClicked() {
-    pushFragment(SearchFragment.newInstance());
+    searchFragment = SearchFragment.newInstance();
+    pushFragment(searchFragment);
   }
 
   @Override
@@ -43,6 +48,19 @@ public class MainActivity extends AppCompatActivity implements IndexFragment.Int
     if (toolbar != null) {
       setSupportActionBar(toolbar);
       toolbar.setNavigationIcon(R.drawable.ic_navigate_before_black_24dp);
+
+      svCity.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String query) {
+          return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String newText) {
+          onSearchTextChange(newText);
+          return true;
+        }
+      });
     }
   }
 
@@ -54,5 +72,10 @@ public class MainActivity extends AppCompatActivity implements IndexFragment.Int
   @Override
   public void onShowToolbar() {
     if (toolbar != null) toolbar.setVisibility(View.VISIBLE);
+  }
+
+  @Override
+  public void onSearchTextChange(String query) {
+    searchFragment.onSearchTextChange(query);
   }
 }

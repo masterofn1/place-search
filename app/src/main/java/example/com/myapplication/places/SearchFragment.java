@@ -62,6 +62,10 @@ public class SearchFragment extends Fragment {
     listener = null;
   }
 
+  void onSearchTextChange(String query) {
+
+  }
+
   private void setUpToolBar() {
     if (listener != null) listener.onSetUpToolbar();
   }
@@ -70,5 +74,7 @@ public class SearchFragment extends Fragment {
     void onSetUpToolbar();
 
     void onShowToolbar();
+
+    void onSearchTextChange(String query);
   }
 }
