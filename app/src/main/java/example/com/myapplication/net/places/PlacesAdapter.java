@@ -1,6 +1,7 @@
 package example.com.myapplication.net.places;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,6 +51,9 @@ public class PlacesAdapter extends ArrayAdapter<PlaceDTO> {
       holder.tvCity.setText(place.getName());
       holder.tvSubtitle.setText(place.getSubtitle());
       String url = place.getBanner() != null && !place.getBanner().isEmpty() ? place.getBanner() : null;
+      if(url==null) {
+        url = "https://dummyimage.com/300x300/" + place.getColor().split("#")[1] +"/fff"+ "&text=" + place.getName().substring(0, 3);
+      }
       Picasso.with(context)
           .load(url)
           .noFade()
