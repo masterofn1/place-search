@@ -8,7 +8,6 @@ import java.util.concurrent.TimeUnit;
 import androidx.annotation.NonNull;
 import dagger.Module;
 import dagger.Provides;
-import example.com.myapplication.ToStringConverterFactory;
 import example.com.myapplication.di.scope.PerApplication;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -34,7 +33,6 @@ public class HttpModule {
     return new Retrofit.Builder()
         .addCallAdapterFactory(rxJava2CallAdapterFactory)
         .addConverterFactory(gsonConverterFactory)
-        .addConverterFactory(new ToStringConverterFactory())
         .client(httpClient)
         .baseUrl(baseUrl)
         .build();

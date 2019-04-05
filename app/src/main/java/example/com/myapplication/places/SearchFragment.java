@@ -24,21 +24,22 @@ import example.com.myapplication.api.LemiService;
 import example.com.myapplication.di.components.DaggerSearchFragmentComponent;
 import example.com.myapplication.di.components.SearchFragmentComponent;
 import example.com.myapplication.model.PlaceDTO;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
-import io.reactivex.schedulers.Schedulers;
+import example.com.myapplication.net.places.SearchLoader;
+import example.com.myapplication.net.places.SearchOperation;
 
 /**
  * Created by kestrella on 4/4/19.
  * ken.aque@gmail.com
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements SearchContract.View {
   @BindView(R.id.lv_cities) ListView lvCities;
 
   @Nullable private InteractionListener listener;
   @Inject LemiService lemiService;
   @Inject Gson gson;
+
+  @Nullable private SearchContract.Presenter presenter;
+
 
   static SearchFragment newInstance() {
     Bundle args = new Bundle();
@@ -51,7 +52,8 @@ public class SearchFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     initComponent().inject(this);
-
+    SearchLoader searchLoader = new SearchOperation(lemiService);
+    presenter = new SearchPresenter(this, searchLoader);
   }
 
   @Nullable
@@ -66,17 +68,7 @@ public class SearchFragment extends Fragment {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    Disposable d = search().observeOn(AndroidSchedulers.mainThread())
-        .subscribeOn(Schedulers.io())
-        .subscribe(result -> {
-          // todo
-        }, e -> {
-          // something went wrong
-        });
-  }
-
-  private Observable<List<PlaceDTO>> search() {
-    return lemiService.search("lond").flatMap(Observable::just);
+    if (presenter != null) presenter.search("lon");
   }
 
   @Override
@@ -114,6 +106,11 @@ public class SearchFragment extends Fragment {
     return DaggerSearchFragmentComponent.builder()
         .applicationComponent(App.get(getActivity()).getApplicationComponent())
         .build();
+  }
+
+  @Override
+  public void showResult(List<PlaceDTO> places) {
+
   }
 
   public interface InteractionListener {
