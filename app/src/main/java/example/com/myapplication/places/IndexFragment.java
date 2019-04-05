@@ -5,10 +5,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import example.com.myapplication.R;
@@ -19,9 +21,13 @@ import example.com.myapplication.R;
  */
 public class IndexFragment extends Fragment {
   @Nullable private InteractionListener listener;
+  private static final String CITY = "city";
 
-  static IndexFragment newInstance() {
+  @BindView(R.id.tv_selected_city) TextView tvSelectedCity;
+
+  static IndexFragment newInstance(@Nullable String city) {
     Bundle args = new Bundle();
+    if (city != null) args.putString(CITY, city);
     IndexFragment fragment = new IndexFragment();
     fragment.setArguments(args);
     return fragment;
@@ -56,6 +62,15 @@ public class IndexFragment extends Fragment {
   public void onResume() {
     super.onResume();
     if (listener != null) listener.onHideToolBar();
+    Bundle bundle = getArguments();
+    if (bundle == null) return;
+    if (bundle.getString(CITY) != null) {
+      String city = bundle.getString(CITY);
+      tvSelectedCity.setText(String.format(getString(R.string.selected_city), city));
+      tvSelectedCity.setVisibility(View.VISIBLE);
+    } else {
+      tvSelectedCity.setVisibility(View.GONE);
+    }
   }
 
   @OnClick(R.id.tv_tap_to_select)

@@ -2,7 +2,8 @@
 <LinearLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	android:orientation="vertical">
 
 	<TextView android:id="@+id/tv_tap_to_select"
 						android:layout_width="match_parent"
@@ -14,5 +15,15 @@
 						android:text="@string/tap_to_select"
 						android:textColor="@color/primaryText"
 						android:textSize="@dimen/text_20"/>
+
+	<TextView android:id="@+id/tv_selected_city"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_marginStart="@dimen/horizontal_spacing_20"
+						android:layout_marginTop="@dimen/vertical_spacing"
+						android:layout_marginEnd="@dimen/horizontal_spacing"
+						android:textColor="@color/primaryText"
+						android:textSize="@dimen/text_20"
+						android:visibility="gone"/>
 
 </LinearLayout>

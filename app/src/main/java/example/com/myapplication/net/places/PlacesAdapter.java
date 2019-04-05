@@ -25,9 +25,12 @@ import example.com.myapplication.model.PlaceDTO;
  */
 public class PlacesAdapter extends ArrayAdapter<PlaceDTO> {
   private  Context context;
-  public PlacesAdapter(@NonNull Context context, @NonNull List<PlaceDTO> objects) {
+  private final ClickListener listener;
+
+  public PlacesAdapter(@NonNull Context context, @NonNull List<PlaceDTO> objects, ClickListener clickListener) {
     super(context, 0, objects);
     this.context = context;
+    this.listener = clickListener;
   }
 
   @NonNull
@@ -53,6 +56,8 @@ public class PlacesAdapter extends ArrayAdapter<PlaceDTO> {
           .fit()
           .centerCrop()
           .into(holder.ivBanner);
+
+      convertView.setOnClickListener(view -> listener.onClick(place));
     }
 
     return convertView;
@@ -66,5 +71,9 @@ public class PlacesAdapter extends ArrayAdapter<PlaceDTO> {
     private ViewHolder(View view) {
       ButterKnife.bind(this, view);
     }
+  }
+
+  public interface ClickListener {
+    void onClick(PlaceDTO place);
   }
 }

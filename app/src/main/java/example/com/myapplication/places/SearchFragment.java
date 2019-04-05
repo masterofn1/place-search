@@ -113,9 +113,16 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
   @Override
   public void showResult(List<PlaceDTO> places) {
-    placesAdapter = new PlacesAdapter(getContext(), places);
+    placesAdapter = new PlacesAdapter(getContext(), places, clickListener);
     lvCities.setAdapter(placesAdapter);
   }
+
+  private PlacesAdapter.ClickListener clickListener = new PlacesAdapter.ClickListener() {
+    @Override
+    public void onClick(PlaceDTO place) {
+      listener.onSelectItem(place);
+    }
+  };
 
   public interface InteractionListener {
     void onSetUpToolbar();
@@ -123,5 +130,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
     void onShowToolbar();
 
     void onSearchTextChange(String query);
+
+    void onSelectItem(PlaceDTO placeDTO);
   }
 }

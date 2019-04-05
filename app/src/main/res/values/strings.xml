@@ -3,4 +3,5 @@
 	<string name="tap_to_select">Tap to select a city</string>
 	<string name="search">Search</string>
 	<string name="query_search">Search for a city</string>
+	<string name="selected_city">You selected: %1$s</string>
 </resources>

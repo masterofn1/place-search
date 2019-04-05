@@ -12,6 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import example.com.myapplication.R;
+import example.com.myapplication.model.PlaceDTO;
 
 public class MainActivity extends AppCompatActivity implements IndexFragment.InteractionListener,
     SearchFragment.InteractionListener {
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements IndexFragment.Int
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     ButterKnife.bind(this);
-    pushFragment(IndexFragment.newInstance());
+    pushFragment(IndexFragment.newInstance(null));
   }
 
   void pushFragment(Fragment fragment) {
@@ -77,5 +78,11 @@ public class MainActivity extends AppCompatActivity implements IndexFragment.Int
   @Override
   public void onSearchTextChange(String query) {
     searchFragment.onSearchTextChange(query);
+  }
+
+  @Override
+  public void onSelectItem(PlaceDTO placeDTO) {
+    pushFragment(IndexFragment.newInstance(placeDTO.getName()));
+
   }
 }
