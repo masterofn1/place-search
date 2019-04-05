@@ -14,13 +14,18 @@
 								android:gravity="center_vertical"
 								android:orientation="horizontal"
 								tools:ignore="UselessParent">
-		<ImageView
+		<!--<ImageView-->
+		<!--android:id="@+id/iv_banner"-->
+		<!--android:layout_width="35dp"-->
+		<!--android:layout_height="35dp"-->
+		<!--android:background="@color/secondaryText"-->
+		<!--android:scaleType="centerInside"-->
+		<!--tools:ignore="ContentDescription"/>-->
+
+		<de.hdodenhof.circleimageview.CircleImageView
 			android:id="@+id/iv_banner"
 			android:layout_width="35dp"
-			android:layout_height="35dp"
-			android:background="@color/secondaryText"
-			android:scaleType="centerInside"
-			tools:ignore="ContentDescription"/>
+			android:layout_height="35dp"/>
 
 		<LinearLayout android:layout_width="wrap_content"
 									android:layout_height="wrap_content"
