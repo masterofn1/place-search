@@ -24,6 +24,7 @@ import example.com.myapplication.api.LemiService;
 import example.com.myapplication.di.components.DaggerSearchFragmentComponent;
 import example.com.myapplication.di.components.SearchFragmentComponent;
 import example.com.myapplication.model.PlaceDTO;
+import example.com.myapplication.net.places.PlacesAdapter;
 import example.com.myapplication.net.places.SearchLoader;
 import example.com.myapplication.net.places.SearchOperation;
 
@@ -37,6 +38,8 @@ public class SearchFragment extends Fragment implements SearchContract.View {
   @Nullable private InteractionListener listener;
   @Inject LemiService lemiService;
   @Inject Gson gson;
+
+  private PlacesAdapter placesAdapter;
 
   @Nullable private SearchContract.Presenter presenter;
 
@@ -68,7 +71,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
   @Override
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    if (presenter != null) presenter.search("lon");
+    if (presenter != null) presenter.search("");
   }
 
   @Override
@@ -95,7 +98,7 @@ public class SearchFragment extends Fragment implements SearchContract.View {
   }
 
   void onSearchTextChange(String query) {
-
+    if (presenter != null) presenter.search(query);
   }
 
   private void setUpToolBar() {
@@ -110,7 +113,8 @@ public class SearchFragment extends Fragment implements SearchContract.View {
 
   @Override
   public void showResult(List<PlaceDTO> places) {
-
+    placesAdapter = new PlacesAdapter(getContext(), places);
+    lvCities.setAdapter(placesAdapter);
   }
 
   public interface InteractionListener {

@@ -26,6 +26,7 @@ public class SearchPresenter implements SearchContract.Presenter {
     loader.performSearch(searchTerm, new SearchLoader.CallBack() {
       @Override
       public void onSearchResponse(@NonNull List<PlaceDTO> places) {
+        view.showResult(places);
       }
 
       @Override
