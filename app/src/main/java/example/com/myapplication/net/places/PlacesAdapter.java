@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -22,8 +24,10 @@ import example.com.myapplication.model.PlaceDTO;
  * ken.aque@gmail.com
  */
 public class PlacesAdapter extends ArrayAdapter<PlaceDTO> {
+  private  Context context;
   public PlacesAdapter(@NonNull Context context, @NonNull List<PlaceDTO> objects) {
     super(context, 0, objects);
+    this.context = context;
   }
 
   @NonNull
@@ -43,6 +47,12 @@ public class PlacesAdapter extends ArrayAdapter<PlaceDTO> {
       holder.tvCity.setText(place.getName());
       holder.tvSubtitle.setText(place.getSubtitle());
       String url = place.getBanner() != null && !place.getBanner().isEmpty() ? place.getBanner() : null;
+      Picasso.with(context)
+          .load(url)
+          .noFade()
+          .fit()
+          .centerCrop()
+          .into(holder.ivBanner);
     }
 
     return convertView;
