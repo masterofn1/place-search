@@ -7,12 +7,27 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import com.google.gson.Gson;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import example.com.myapplication.App;
 import example.com.myapplication.R;
+import example.com.myapplication.api.LemiService;
+import example.com.myapplication.di.components.DaggerSearchFragmentComponent;
+import example.com.myapplication.di.components.SearchFragmentComponent;
+import example.com.myapplication.model.PlaceDTO;
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by kestrella on 4/4/19.
@@ -22,12 +37,21 @@ public class SearchFragment extends Fragment {
   @BindView(R.id.lv_cities) ListView lvCities;
 
   @Nullable private InteractionListener listener;
+  @Inject LemiService lemiService;
+  @Inject Gson gson;
 
   static SearchFragment newInstance() {
     Bundle args = new Bundle();
     SearchFragment fragment = new SearchFragment();
     fragment.setArguments(args);
     return fragment;
+  }
+
+  @Override
+  public void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    initComponent().inject(this);
+
   }
 
   @Nullable
@@ -37,6 +61,22 @@ public class SearchFragment extends Fragment {
     ButterKnife.bind(this, view);
     setUpToolBar();
     return view;
+  }
+
+  @Override
+  public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    super.onViewCreated(view, savedInstanceState);
+    Disposable d = search().observeOn(AndroidSchedulers.mainThread())
+        .subscribeOn(Schedulers.io())
+        .subscribe(result -> {
+          // todo
+        }, e -> {
+          // something went wrong
+        });
+  }
+
+  private Observable<List<PlaceDTO>> search() {
+    return lemiService.search("lond").flatMap(Observable::just);
   }
 
   @Override
@@ -68,6 +108,12 @@ public class SearchFragment extends Fragment {
 
   private void setUpToolBar() {
     if (listener != null) listener.onSetUpToolbar();
+  }
+
+  private SearchFragmentComponent initComponent() {
+    return DaggerSearchFragmentComponent.builder()
+        .applicationComponent(App.get(getActivity()).getApplicationComponent())
+        .build();
   }
 
   public interface InteractionListener {
