@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.google.gson.Gson;
@@ -18,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import example.com.misc.Utils;
 import example.com.myapplication.App;
 import example.com.myapplication.R;
 import example.com.myapplication.api.LemiService;
@@ -72,6 +74,17 @@ public class SearchFragment extends Fragment implements SearchContract.View {
   public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     if (presenter != null) presenter.search("");
+
+    lvCities.setOnScrollListener(new AbsListView.OnScrollListener() {
+      @Override
+      public void onScrollStateChanged(AbsListView absListView, int i) {
+        Utils.hideSoftKeyboard(absListView);
+      }
+
+      @Override
+      public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+      }
+    });
   }
 
   @Override
